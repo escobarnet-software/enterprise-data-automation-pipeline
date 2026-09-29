@@ -16,10 +16,29 @@ SCHEMA_HINTS = {
 class RuleBasedExtractor:
     """Heuristic extractor: no API key needed, used for tests / offline."""
 
-    KEYWORDS = {"invoice": ["invoice", "factura", "invoice number", "total due"],
-                "purchase_order": ["purchase order", "p.o.", "po number"],
+    KEYWORDS = {"invoice": ["invoice", "factura", "invoice number", "total due", "orden de compra", "order"],
+                "purchase_order": ["purchase order", "p.o.", "po number", "orden de compra", "purchase"],
                 "receipt": ["receipt", "recibo", "paid", "change"],
                 "email": ["from:", "subject:", "dear ", "best regards"]}
+
+    MONEY = re.compile(r"(?:[$€£]\s?[\d.,]+|[\d.,]+\s?(?:USD|EUR|MXN|COP|GBP|PEN|CLP|ARS|dollars?|pesos?))", re.I)
+
+    def _money_values(self, content: str) -> list:
+        vals = []
+        for m in self.MONEY.finditer(content):
+            num = re.search(r"[\d][\d.,]*", m.group(0))
+            if not num:
+                continue
+            s = num.group(0)
+            try:
+                if "," in s and "." in s:
+                    s = s.replace(",", "") if s.rfind(".") > s.rfind(",") else s.replace(".", "").replace(",", ".")
+                elif "," in s and "." not in s:
+                    s = s.replace(",", ".") if len(s.split(",")[-1]) == 2 else s.replace(",", "")
+                vals.append(float(s))
+            except ValueError:
+                continue
+        return vals
 
     def classify(self, content: str, source_type: str = "text", source_name: str = "") -> dict:
         low = content.lower()
@@ -37,9 +56,14 @@ class RuleBasedExtractor:
         m_subj = re.search(r"^Subject:\s*(.+)$", content, re.M | re.I)
         if m_subj:
             data["subject"] = m_subj.group(1).strip()
-        m_total = re.search(r"(?:total|amount due|grand total)\D{0,10}([\d,]+\.\d{2})", content, re.I)
+        m_total = re.search(r"(?:total|amount due|grand total|monto total)\D{0,10}([\d,]+\.\d{2})", content, re.I)
         if m_total:
             data["total"] = float(m_total.group(1).replace(",", ""))
+        else:
+            money = self._money_values(content)
+            if money:
+                data["total"] = max(money)
+                data["total_candidates"] = money[:10]
         m_cur = re.search(r"\b(USD|EUR|MXN|COP|GBP|PEN|CLP|ARS)\b", content)
         if m_cur:
             data["currency"] = m_cur.group(1)

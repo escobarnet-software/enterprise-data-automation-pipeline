@@ -1,5 +1,6 @@
 """FastAPI service: upload files, webhooks, query records."""
-from fastapi import FastAPI, UploadFile, File, Depends, Header, HTTPException
+from fastapi import FastAPI, UploadFile, File, Depends, Header, HTTPException, Request
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 from config.settings import get_settings
 from src.ingestion.base import IngestedDocument, detect_source_type
@@ -18,6 +19,18 @@ Base.metadata.create_all(engine)
 
 app = FastAPI(title="Enterprise Data Automation Pipeline", version="1.0.0",
               description="Escobar NET — unstructured data → structured DB records.")
+
+
+@app.exception_handler(Exception)
+async def unhandled_handler(request: Request, exc: Exception):
+    from src.transform.validators import ValidationError
+    if isinstance(exc, ValidationError):
+        return JSONResponse(422, {"detail": str(exc), "hint": "No total/amount found. Try the Groq AI extractor (set GROQ_API_KEY) or /ingest/text."})
+    if isinstance(exc, HTTPException):
+        return JSONResponse(exc.status_code, {"detail": exc.detail})
+    import logging
+    logging.getLogger("pipeline").exception("Unhandled error on %s", request.url.path)
+    return JSONResponse(500, {"detail": f"{type(exc).__name__}: {exc}"})
 
 
 def get_pipeline():
