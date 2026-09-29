@@ -129,7 +129,7 @@ Inbox watcher with auto-ingest, Gmail/S3/GCS/IMAP connectors, versioned Alembic 
 
 ## 16. Author — Escobar NET
 
-Designed and built by **Escobar NET** (B2B Automation · AI Integration · Backend Architecture). *"Transform unstructured data into actionable insights — instantly."* Free for educational and commercial use; credit to Escobar NET appreciated.
+Designed, built and owned by **Escobar NET** (B2B Automation · AI Integration · Backend Architecture). *"Transform unstructured data into actionable insights — instantly."* © 2026 Escobar NET. All rights reserved.
 
 
 ## 6. Installation & Configuration
