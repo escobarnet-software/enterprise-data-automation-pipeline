@@ -1,0 +1,4 @@
+name,phone,email,company,amount,currency,date
+Acme Corp,+1-555-0100,billing@acme.com,Acme,1250.00,USD,2026-09-15
+Globex Inc,+1-555-0200,accounts@globex.com,Globex,899.50,USD,2026-09-20
+Initech LLC,+1-555-0300,finance@initech.com,Initech,2100.75,MXN,2026-09-25

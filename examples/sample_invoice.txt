@@ -1,0 +1,14 @@
+INVOICE #INV-2026-0042
+Vendor: Escobar NET Solutions
+Issue Date: 2026-09-28
+Bill To: Globex Corporation
+
+Description              Qty   Unit Price
+Cloud API integration      1      900.00
+Data pipeline setup        1      350.50
+
+Subtotal: 1250.50
+Tax (16%): 200.08
+Grand Total: 1450.58 USD
+
+Payment due within 30 days.

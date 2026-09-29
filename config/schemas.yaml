@@ -1,0 +1,19 @@
+document_types:
+  - invoice
+  - purchase_order
+  - receipt
+  - email
+  - report
+  - unknown
+
+extraction_schemas:
+  invoice:
+    required: [vendor, invoice_number, issue_date, total, currency, line_items]
+  purchase_order:
+    required: [buyer, po_number, items, total, delivery_date]
+  receipt:
+    required: [merchant, date, total, currency, items]
+  email:
+    required: [sender, subject, body, intent, entities]
+  report:
+    required: [title, period, metrics, summary]
