@@ -11,6 +11,8 @@
 ![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?logo=docker&logoColor=white)
 ![Tests](https://img.shields.io/badge/Tests-pytest_passing-4BC51D)
 
+<img width="800" height="450" alt="ezgif-332539e9fb59fbd9" src="https://github.com/user-attachments/assets/1d234549-1bc5-4ca4-b519-7bcf42d47c28" />
+
 An enterprise-grade Python backend architecture created by **Escobar NET** that eliminates manual data entry. It ingests PDFs, emails, CSVs, APIs and webhooks, extracts precise JSON schemas with ultra-fast LLMs (**Groq**), normalizes and validates every record in Python, and syncs it **idempotently** into SQL.
 
 ## Table of Contents
